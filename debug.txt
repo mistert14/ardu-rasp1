@@ -1,0 +1,5 @@
+HC05
+SimpleDHT
+Edition des liens
+Génération du fichier HEX
+Upload du fichier - Arduino branché en /dev/ttyACM0

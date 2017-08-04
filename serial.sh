@@ -1,1 +1,1 @@
-screen /dev/ttyACM0  9600
+screen /dev/ttyACM0 115200

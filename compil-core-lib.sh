@@ -2,7 +2,7 @@
 dir=/usr/share/arduino/hardware/arduino
 lib_dir=/home/pi/arduino/lib
 
-rm core/*.*
+#rm core/*.*
 
 # COMPILATION DES FICHIERS C ARDUINO
 for file in $dir/cores/arduino/*.c
@@ -37,6 +37,29 @@ avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=a
     -I /usr/share/arduino/libraries/SoftwareSerial \
     -o core/SoftwareSerial.o /usr/share/arduino/libraries/SoftwareSerial/SoftwareSerial.cpp
 
+# COMPILATION DE SERVO
+avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
+    -I$dir/cores/arduino \
+    -I$dir/variants/standard \
+    -I /usr/share/arduino/libraries/Servo \
+    -o core/Servo.o /usr/share/arduino/libraries/Servo/Servo.cpp
+
+# COMPILATION DE  WIRE
+avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
+    -I$dir/cores/arduino \
+    -I$dir/variants/standard \
+    -I /usr/share/arduino/libraries/Wire \
+    -I /usr/share/arduino/libraries/Wire/utility \
+    -o core/Wire.o /usr/share/arduino/libraries/Wire/Wire.cpp
+
+# COMPILATION DE  FIRMATA
+avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
+    -I$dir/cores/arduino \
+    -I$dir/variants/standard \
+    -I /usr/share/arduino/libraries/Firmata\
+    -o core/Firmata.o /usr/share/arduino/libraries/Firmata/Firmata.cpp
+
+
 
 # COMPILATION DES  LIB PERSO
 echo "Compilation des librairies supplémentaires dans $lib_dir"
@@ -47,8 +70,8 @@ while read line; do
     avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
     -I$dir/cores/arduino \
     -I$dir/variants/standard \
-    -I /usr/share/arduino/libraries/SoftwareSerial \
     -I$lib_dir/$line \
+    -I /usr/share/arduino/libraries/SoftwareSerial \
     -o core/$line.o $lib_dir/$line/$line.cpp
 
 done < liste.txt

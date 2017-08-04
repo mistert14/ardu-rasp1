@@ -1,7 +1,7 @@
 dir=/usr/share/arduino/hardware/arduino
 lib_dir=/home/pi/arduino/lib
 
-rm core/*.*
+#rm core/*.*
 
 for file in $dir/cores/arduino/*.c
 do
