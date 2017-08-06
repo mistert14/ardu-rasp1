@@ -1,5 +1,5 @@
 dir=/usr/share/arduino/hardware/arduino
-projet=StandardFirmata
+projet=Serial
 serie=/dev/ttyACM0
 baud=115200
 lib_dir=/home/pi/arduino/lib
@@ -20,7 +20,6 @@ done < liste.txt
 #echo $tmp
 
 
-#exit 0;
 
 
     avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
@@ -33,10 +32,13 @@ done < liste.txt
     -I /usr/share/arduino/libraries/Wire/utility \
     -I /usr/share/arduino/libraries/Firmata \
     -I /usr/share/arduino/libraries/Firmata/utility \
+    -I /home/pi/arduino/lib2/TS \
     -I /usr/share/arduino/libraries/Servo
 
 
 rm liste.txt
+
+#exit 0;
 
 
 echo "Edition des liens"
@@ -48,6 +50,7 @@ avr-gcc -Os -Wl,--gc-sections -mmcu=atmega328p \
     -I /usr/share/arduino/libraries/Firmata/utility \
     -I /usr/share/arduino/libraries/Wire \
     -I /usr/share/arduino/libraries/Wire/utility \
+    -I /home/pi/arduino/lib2/TS \
     -o $projet.elf $projet.o core/core.a -L core -lm
 
 echo "Génération du fichier HEX"
@@ -60,5 +63,5 @@ rm $projet.o
 rm $projet.elf
 rm $projet.cpp
 
-#echo screen $serie $baud
+echo screen $serie $baud
 

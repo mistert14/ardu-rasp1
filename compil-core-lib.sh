@@ -1,3 +1,4 @@
+
 # CONFIGURATION
 dir=/usr/share/arduino/hardware/arduino
 lib_dir=/home/pi/arduino/lib
@@ -30,6 +31,8 @@ do
            -o core/$filename.o $file
 done
 
+#exit 0;
+
 # COMPILATION DE SOFTWARE SERIAL
 avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
     -I$dir/cores/arduino \
@@ -43,6 +46,15 @@ avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=a
     -I$dir/variants/standard \
     -I /usr/share/arduino/libraries/Servo \
     -o core/Servo.o /usr/share/arduino/libraries/Servo/Servo.cpp
+
+# COMPILATION DE  TWI WIRE
+avr-gcc -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
+    -I$dir/cores/arduino \
+    -I$dir/variants/standard \
+    -I /usr/share/arduino/libraries/Wire \
+    -I /usr/share/arduino/libraries/Wire/utility \
+    -o core/twi.o /usr/share/arduino/libraries/Wire/utility/twi.c
+
 
 # COMPILATION DE  WIRE
 avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
@@ -58,6 +70,25 @@ avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=a
     -I$dir/variants/standard \
     -I /usr/share/arduino/libraries/Firmata\
     -o core/Firmata.o /usr/share/arduino/libraries/Firmata/Firmata.cpp
+
+
+# COMPILATION DU REP TS
+for file in /home/pi/arduino/lib2/TS/*.cpp
+do
+         filename=$(basename "$file")
+         extension="${filename##*.}"
+         filename="${filename%.*}"
+         echo "Génération C++ $filename.o à partir de $file"
+         avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
+           -I$dir/cores/arduino \
+           -I$dir/variants/standard \
+           -I /usr/share/arduino/libraries/SoftwareSerial \
+           -I /usr/share/arduino/libraries/Wire \
+           -I /usr/share/arduino/libraries/Wire/utility \
+           -I/home/pi/arduino/lib2/TS \
+           -o core/$filename.o $file
+done
+
 
 
 
