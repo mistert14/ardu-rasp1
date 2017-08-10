@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="10"/>
+    <BuildModes Active="Default"/>
+    <Units Count="2">
+      <Unit0>
+        <Filename Value="MonServeur1.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="mon_serveur.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form1"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="13"/>
+        <CursorPos X="20" Y="37"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+    </Units>
+    <OtherDefines Count="1">
+      <Define0 Value="UseCThreads"/>
+    </OtherDefines>
+    <JumpHistory Count="13" HistoryIndex="12">
+      <Position1>
+        <Filename Value="mon_serveur.pas"/>
+        <Caret Line="104" Column="35" TopLine="77"/>
+      </Position1>
+      <Position2>
+        <Filename Value="mon_serveur.pas"/>
+        <Caret Line="99" Column="40" TopLine="77"/>
+      </Position2>
+      <Position3>
+        <Filename Value="mon_serveur.pas"/>
+        <Caret Column="41"/>
+      </Position3>
+      <Position4>
+        <Filename Value="mon_serveur.pas"/>
+        <Caret Line="114" Column="24" TopLine="77"/>
+      </Position4>
+      <Position5>
+        <Filename Value="mon_serveur.pas"/>
+        <Caret Line="60" Column="3" TopLine="60"/>
+      </Position5>
+      <Position6>
+        <Filename Value="mon_serveur.pas"/>
+        <Caret Line="119" Column="5" TopLine="99"/>
+      </Position6>
+      <Position7>
+        <Filename Value="mon_serveur.pas"/>
+        <Caret Line="103" Column="18" TopLine="81"/>
+      </Position7>
+      <Position8>
+        <Filename Value="mon_serveur.pas"/>
+        <Caret Line="48" Column="10" TopLine="29"/>
+      </Position8>
+      <Position9>
+        <Filename Value="mon_serveur.pas"/>
+        <Caret Line="91" Column="2" TopLine="83"/>
+      </Position9>
+      <Position10>
+        <Filename Value="mon_serveur.pas"/>
+        <Caret Line="131" Column="16" TopLine="103"/>
+      </Position10>
+      <Position11>
+        <Filename Value="mon_serveur.pas"/>
+        <Caret Line="36" Column="15" TopLine="11"/>
+      </Position11>
+      <Position12>
+        <Filename Value="mon_serveur.pas"/>
+        <Caret Line="124" Column="3" TopLine="110"/>
+      </Position12>
+      <Position13>
+        <Filename Value="mon_serveur.pas"/>
+        <Caret Line="120" Column="27" TopLine="101"/>
+      </Position13>
+    </JumpHistory>
+  </ProjectSession>
+</CONFIG>

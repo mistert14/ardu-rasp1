@@ -1,7 +1,10 @@
 
 # CONFIGURATION
-dir=/usr/share/arduino/hardware/arduino
-lib_dir=/home/pi/arduino/lib
+#dir=/usr/share/arduino/hardware/arduino
+dir=/opt/arduino-1.8.3/hardware/arduino/avr
+ldir=/opt/arduino-1.8.3/libraries
+lib_dir=/home/mistert/arduino/lib
+ldir2=$dir/libraries
 
 #rm core/*.*
 
@@ -18,6 +21,7 @@ do
            -o core/$filename.o $file
 done
 
+
 # COMPILATION DES FICHIERS C++ ARDUINO
 for file in $dir/cores/arduino/*.cpp
 do
@@ -31,49 +35,58 @@ do
            -o core/$filename.o $file
 done
 
-#exit 0;
 
 # COMPILATION DE SOFTWARE SERIAL
+echo "Génération de Software Serial"
 avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
     -I$dir/cores/arduino \
     -I$dir/variants/standard \
-    -I /usr/share/arduino/libraries/SoftwareSerial \
-    -o core/SoftwareSerial.o /usr/share/arduino/libraries/SoftwareSerial/SoftwareSerial.cpp
+    -I$ldir2/SoftwareSerial/src \
+    -o core/SoftwareSerial.o $ldir2/SoftwareSerial/src/SoftwareSerial.cpp
+
+echo "Génération de Servo"
 
 # COMPILATION DE SERVO
 avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
     -I$dir/cores/arduino \
     -I$dir/variants/standard \
-    -I /usr/share/arduino/libraries/Servo \
-    -o core/Servo.o /usr/share/arduino/libraries/Servo/Servo.cpp
+    -I$ldir/Servo/src \
+    -o core/Servo.o $ldir/Servo/src/avr/Servo.cpp
+
+echo "Génération de TWI WIRE"
 
 # COMPILATION DE  TWI WIRE
 avr-gcc -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
     -I$dir/cores/arduino \
     -I$dir/variants/standard \
-    -I /usr/share/arduino/libraries/Wire \
-    -I /usr/share/arduino/libraries/Wire/utility \
-    -o core/twi.o /usr/share/arduino/libraries/Wire/utility/twi.c
+    -I$ldir2/Wire/src \
+    -I$ldir2/Wire/src/utility/src \
+    -o core/twi.o $ldir2/Wire/src/utility/twi.c
 
+echo "Génération de WIRE"
 
 # COMPILATION DE  WIRE
 avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
     -I$dir/cores/arduino \
     -I$dir/variants/standard \
-    -I /usr/share/arduino/libraries/Wire \
-    -I /usr/share/arduino/libraries/Wire/utility \
-    -o core/Wire.o /usr/share/arduino/libraries/Wire/Wire.cpp
+    -I$ldir2/Wire/src/ \
+    -I$ldir2/Wire/src/utility \
+    -o core/Wire.o $ldir2/Wire/src/Wire.cpp
+
+
+echo "Génération de FIRMATA"
 
 # COMPILATION DE  FIRMATA
 avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
     -I$dir/cores/arduino \
     -I$dir/variants/standard \
-    -I /usr/share/arduino/libraries/Firmata\
-    -o core/Firmata.o /usr/share/arduino/libraries/Firmata/Firmata.cpp
+    -I$ldir/Firmata/\
+    -o core/Firmata.o $ldir/Firmata/Firmata.cpp
+
 
 
 # COMPILATION DU REP TS
-for file in /home/pi/arduino/lib2/TS/*.cpp
+for file in /home/mistert/arduino/lib2/TS/*.cpp
 do
          filename=$(basename "$file")
          extension="${filename##*.}"
@@ -82,10 +95,10 @@ do
          avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
            -I$dir/cores/arduino \
            -I$dir/variants/standard \
-           -I /usr/share/arduino/libraries/SoftwareSerial \
-           -I /usr/share/arduino/libraries/Wire \
-           -I /usr/share/arduino/libraries/Wire/utility \
-           -I/home/pi/arduino/lib2/TS \
+           -I$ldir2/SoftwareSerial/src \
+           -I$ldir2/Wire/src \
+           -I$ldir2/Wire/src/utility \
+           -I/home/mistert/arduino/lib2/TS \
            -o core/$filename.o $file
 done
 
@@ -102,7 +115,7 @@ while read line; do
     -I$dir/cores/arduino \
     -I$dir/variants/standard \
     -I$lib_dir/$line \
-    -I /usr/share/arduino/libraries/SoftwareSerial \
+    -I$ldir2/SoftwareSerial/src \
     -o core/$line.o $lib_dir/$line/$line.cpp
 
 done < liste.txt
