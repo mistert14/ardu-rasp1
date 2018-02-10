@@ -4,6 +4,11 @@
 #include "rgb_lcd.h"
 #include "DHT.h"
 
+
+char receivedChar;
+boolean newData = false;
+
+
 double temp;
 double hum;
 double sol;
@@ -19,6 +24,38 @@ void _loop() {
 
 }
 
+
+void recvOneChar() {
+ if (Serial.available() > 0) {
+ receivedChar = Serial.read();
+ newData = true;
+ }
+}
+
+
+void processData() {
+ if (newData == true) {
+    if (receivedChar=='@') {
+    Serial.print("T:");
+    Serial.print(temp);
+    Serial.print(", H: ");
+    Serial.print(hum);
+    Serial.print(", S: ");
+    Serial.print(sol);
+    Serial.println();
+ } 
+ else if (receivedChar=='P') {
+    Serial.println("Pompe on");
+    digitalWrite(2,HIGH);
+ }
+ else if (receivedChar=='p') {
+    Serial.println("Pompe off");
+    digitalWrite(2,LOW);
+ }
+
+ newData = false;
+ }
+}
 
 void _delay(float seconds){
     long endTime = millis() + seconds * 1000;
@@ -45,12 +82,9 @@ void loop(){
     hum = dht.readHumidity();
     sol = analogRead(0);
 
-    Serial.print("T:");
-    Serial.print(temp);
-    Serial.print(", H: ");
-    Serial.print(hum);
-    Serial.print(", S: ");
-    Serial.print(sol);
+    recvOneChar();
+    processData();
+
 
     rgbLcd.setCursor(0,0);
     rgbLcd.print("T: "); 
@@ -61,16 +95,6 @@ void loop(){
     rgbLcd.print("S: "); 
     rgbLcd.print(sol); 
 
-    Serial.print(", P: ");
-    if((sol) < (500)){
-        digitalWrite(2,1);
-        Serial.print("1;");
-    } else {
-        digitalWrite(2,0);
-        Serial.print("0;");
-    }
-
-    Serial.println();
 
 
     _delay(.4);

@@ -1,9 +1,11 @@
-dir=/opt/arduino-1.8.3/hardware/arduino/avr
-ldir=/opt/arduino-1.8.3/libraries
-lib_dir=/home/mistert/arduino/lib
-ldir2=$dir/libraries
+#dir=/opt/arduino-1.8.3/hardware/arduino/avr
+dir=/usr/share/arduino/hardware/arduino
+#ldir=/opt/arduino-1.8.3/libraries
+ldir=/usr/share/arduino/libraries
+lib_dir=/home/pi/arduino/lib
+ldir2=$ldir
 
-projet=Serial
+projet=Serre
 serie=/dev/ttyACM0
 baud=115200
 
@@ -28,13 +30,13 @@ done < liste.txt
     -I $dir/cores/arduino \
     -I $dir/variants/standard \
     $tmp \
-    -I$ldir2/SoftwareSerial/src \
-    -I$ldir2/Wire/src \
-    -I$ldir2/Wire/src/utility \
+    -I$ldir2/SoftwareSerial \
+    -I$ldir2/Wire \
+    -I$ldir2/Wireutility \
     -I$ldir/Firmata \
     -I$ldir/Firmata/utility \
-    -I /home/mistert/arduino/lib2/TS \
-    -I$ldir/Servo/src
+    -I /home/pi/arduino/lib2/TS \
+    -I$ldir/Servo
 
 
 
