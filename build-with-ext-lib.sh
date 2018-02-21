@@ -1,9 +1,7 @@
-#dir=/opt/arduino-1.8.3/hardware/arduino/avr
-dir=/usr/share/arduino/hardware/arduino
-#ldir=/opt/arduino-1.8.3/libraries
-ldir=/usr/share/arduino/libraries
-lib_dir=/home/pi/arduino/lib
-ldir2=$ldir
+dir=/opt/arduino/hardware/arduino/avr
+lib_dir=./lib
+ldir2=/opt/arduino/libraries
+ldir=/opt/arduino/hardware/arduino/avr/libraries
 
 projet=Serre
 serie=/dev/ttyACM0
@@ -27,15 +25,18 @@ done < liste.txt
 
     avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
     -o $projet.o $projet.cpp \
-    -I $dir/cores/arduino \
-    -I $dir/variants/standard \
+    -I$dir/cores/arduino \
+    -I$dir/variants/standard \
+    -I$ldir/SoftwareSerial/src \
+    -I$ldir/Wire/src \
+    -I$ldir/Wire/src/utility \
+    -I./lib2/TS \
     $tmp \
-    -I$ldir2/SoftwareSerial \
-    -I$ldir2/Wire \
-    -I$ldir2/Wireutility \
-    -I$ldir/Firmata \
-    -I$ldir/Firmata/utility \
-    -I /home/pi/arduino/lib2/TS \
+    -I$ldir/Firmata/src \
+    -I$ldir/Firmata/src/utility \
+    -I./lib2/TS \
+    -I./lib2/makeblock/src \
+    -I./lib2/IRremote \
     -I$ldir/Servo
 
 

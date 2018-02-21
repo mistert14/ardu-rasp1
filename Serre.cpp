@@ -9,9 +9,6 @@ char receivedChar;
 boolean newData = false;
 
 
-double temp;
-double hum;
-double sol;
 double capteur;
 
 DHT dht(4, 11);
@@ -33,7 +30,7 @@ void recvOneChar() {
 }
 
 
-void processData() {
+void processData(float temp, float hum,float sol) {
  if (newData == true) {
     if (receivedChar=='@') {
     Serial.print("T:");
@@ -78,12 +75,13 @@ void setup(){
 
 void loop(){
 
-    temp = dht.readTemperature();
-    hum = dht.readHumidity();
-    sol = analogRead(0);
+    float temp = dht.readTemperature();
+    //temp = dht.temperature;
+    float hum = dht.readHumidity();
+    float sol = analogRead(0);
 
     recvOneChar();
-    processData();
+    processData(temp,hum,sol);
 
 
     rgbLcd.setCursor(0,0);

@@ -45,7 +45,7 @@ Type
 Var
   Serv : TTestHTTPServer;
   s:string;
-
+  f:TextFile;
 { TTestHTTPServer }
 
 procedure TTestHTTPServer.Split(Delimiter: Char; Str: string) ;
@@ -87,7 +87,7 @@ Var
   s:string;
 begin
   FUrl:=ARequest.Url;
-  Writeln(FUrl);
+  Writeln(f,FUrl);
 
   if pos('?',FURL) >0 then begin
     Split('?',FURL);
@@ -97,7 +97,7 @@ begin
        s:=Fser.RecvString(MX);
        Fvalue:=s;
        AResponse.ContentType:='text/plain';
-       Writeln('Serving data: "',s,'". type Mime: ',AResponse.ContentType);
+       Writeln(f,'Serving data: "',s,'". type Mime: ',AResponse.ContentType);
     end;
   end;
 
@@ -118,7 +118,8 @@ end;
 
 
 begin
-  
+  Assignfile(f,'/var/log/mrt_serveur.log');
+  Rewrite(f);
   Serv:=TTestHTTPServer.Create(Nil);
   try
     Serv.FListOfStrings:=TstringList.create;
@@ -130,11 +131,11 @@ begin
     sleep(800);
     If Serv.Fser.CanRead(MX) then begin
        s:=Serv.Fser.RecvString(MX);
-       Writeln(s);
+       Writeln(f,s);
     end;
-    Writeln('Starting server');
+    Writeln(f,'Starting server');
 
-    Serv.BaseDir:=ExtractFilePath('/home/mistert/public_html/files');
+    Serv.BaseDir:=ExtractFilePath('/home/pi/www');
     {$ifdef unix}
     Serv.MimeTypesFile:='/etc/mime.types';
     {$endif}
@@ -145,6 +146,7 @@ begin
     Serv.Active:=True;
   finally
     Serv.Free;
+    close(f);
   end;
 
 end.

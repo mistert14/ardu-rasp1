@@ -1,10 +1,14 @@
 
 # CONFIGURATION
-dir=/usr/share/arduino/hardware/arduino
+#dir=/usr/share/arduino/hardware/arduino
+dir=/opt/arduino/hardware/arduino/avr
+
 #dir=/opt/arduino-1.8.3/hardware/arduino/avr
 #ldir=/opt/arduino-1.8.3/libraries
-lib_dir=/home/pi/arduino/lib
-ldir2=/usr/share/arduino/libraries
+lib_dir=./lib
+#ldir2=/usr/share/arduino/libraries
+ldir2=/opt/arduino/libraries
+ldir=/opt/arduino/hardware/arduino/avr/libraries
 
 #rm core/*.*
 
@@ -41,17 +45,27 @@ echo "Génération de Software Serial"
 avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
     -I$dir/cores/arduino \
     -I$dir/variants/standard \
-    -I$ldir2/SoftwareSerial \
-    -o core/SoftwareSerial.o $ldir2/SoftwareSerial/SoftwareSerial.cpp
+    -I$ldir/SoftwareSerial/src \
+    -o core/SoftwareSerial.o $ldir/SoftwareSerial/src/SoftwareSerial.cpp
 
 echo "Génération de Servo"
-
 # COMPILATION DE SERVO
 avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
     -I$dir/cores/arduino \
     -I$dir/variants/standard \
-    -I$ldir2/Servo \
-    -o core/Servo.o $ldir2/Servo/Servo.cpp
+    -I$ldir2/Servo/src \
+    -I$ldir2/Servo/src/avr \
+    -o core/Servo.o $ldir2/Servo/src/avr/Servo.cpp
+
+echo "Génération de SPI"
+
+# COMPILATION DE  SPI
+avr-gcc -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
+    -I$dir/cores/arduino \
+    -I$dir/variants/standard \
+    -I$ldir/SPI/src \
+    -o core/SPI.o $ldir/SPI/src/SPI.cpp
+
 
 echo "Génération de TWI WIRE"
 
@@ -59,9 +73,9 @@ echo "Génération de TWI WIRE"
 avr-gcc -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
     -I$dir/cores/arduino \
     -I$dir/variants/standard \
-    -I$ldir2/Wire/ \
-    -I$ldir2/Wire/utility \
-    -o core/twi.o $ldir2/Wire/utility/twi.c
+    -I$ldir/Wire/src \
+    -I$ldir/Wire/src/utility \
+    -o core/twi.o $ldir/Wire/src/utility/twi.c
 
 echo "Génération de WIRE"
 
@@ -69,9 +83,9 @@ echo "Génération de WIRE"
 avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
     -I$dir/cores/arduino \
     -I$dir/variants/standard \
-    -I$ldir2/Wire/ \
-    -I$ldir2/Wire/utility \
-    -o core/Wire.o $ldir2/Wire/Wire.cpp
+    -I$ldir/Wire/src \
+    -I$ldir/Wire/src/utility \
+    -o core/Wire.o $ldir/Wire/src/Wire.cpp
 
 
 echo "Génération de FIRMATA"
@@ -86,7 +100,7 @@ avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=a
 
 
 # COMPILATION DU REP TS
-for file in /home/pi/arduino/lib2/TS/*.cpp
+for file in ./lib2/TS/*.cpp
 do
          filename=$(basename "$file")
          extension="${filename##*.}"
@@ -95,10 +109,44 @@ do
          avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
            -I$dir/cores/arduino \
            -I$dir/variants/standard \
-           -I$ldir2/SoftwareSerial \
-           -I$ldir2/Wire \
-           -I$ldir2/Wire/utility \
-           -I/home/pi/arduino/lib2/TS \
+           -I$ldir/SoftwareSerial/src \
+           -I$ldir/Wire/src \
+           -I$ldir/Wire/src/utility \
+           -I./lib2/TS \
+           -o core/$filename.o $file
+done
+
+# COMPILATION DE MAKEBLOCK
+for file in ./lib2/makeblock/src/*.cpp
+do
+         filename=$(basename "$file")
+         extension="${filename##*.}"
+         filename="${filename%.*}"
+         echo "Génération C++ $filename.o à partir de $file"
+         avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
+           -I$dir/cores/arduino \
+           -I$dir/variants/standard \
+           -I$ldir/SoftwareSerial/src \
+           -I$ldir/Wire/src \
+           -I$ldir/Wire/src/utility \
+           -I./lib2/makeblock/src \
+           -o core/$filename.o $file
+done
+
+# COMPILATION DE IR
+for file in ./lib2/IRremote/*.cpp
+do
+         filename=$(basename "$file")
+         extension="${filename##*.}"
+         filename="${filename%.*}"
+         echo "Génération C++ $filename.o à partir de $file"
+         avr-g++ -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=22 \
+           -I$dir/cores/arduino \
+           -I$dir/variants/standard \
+           -I$ldir/SoftwareSerial/src \
+           -I$ldir/Wire/src \
+           -I$ldir/Wire/src/utility \
+           -I./lib2/IRremote \
            -o core/$filename.o $file
 done
 
@@ -115,7 +163,10 @@ while read line; do
     -I$dir/cores/arduino \
     -I$dir/variants/standard \
     -I$lib_dir/$line \
-    -I$ldir2/SoftwareSerial \
+    -I$ldir/SoftwareSerial/src \
+    -I$ldir/SPI/src \
+    -I$ldir/Wire/src \
+    -I$ldir/Wire/src/utility \
     -o core/$line.o $lib_dir/$line/$line.cpp
 
 done < liste.txt

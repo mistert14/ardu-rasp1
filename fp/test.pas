@@ -26,7 +26,7 @@ begin
 
 
 
-if not ser.InstanceActive then ser.connect('/dev/ttyACM0');
+if not ser.InstanceActive then ser.connect('/dev/ttyUSB0');
 sleep(500);
 ser.config(115200,8,'N',SB1,False,False);
 ser.purge();

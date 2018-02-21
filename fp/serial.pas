@@ -42,9 +42,9 @@ begin
 if not ser.InstanceActive then ser.connect('/dev/ttyACM0');
 sleep(500);
 ser.config(115200,8,'N',SB1,False,False);
-//ser.purge();
+ser.purge();
 sleep(300);
-//ser.flush();
+ser.flush();
 
 //msg accueil
 if ser.canRead(MX) then begin 
