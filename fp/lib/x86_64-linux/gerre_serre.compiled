@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="/usr/local/bin/fpc" Date="1519977345"/>
+  <Params Value=" -MObjFPC -Scghi -Cg -O1 -g -gl -l -vewnhibq -Fi/home/mistert/arduino/fp/lib/x86_64-linux -Fu/home/mistert/comp/sdpo-cl-svn/lib/x86_64-linux -Fu/usr/local/share/lazarus/lcl/units/x86_64-linux/gtk2 -Fu/usr/local/share/lazarus/lcl/units/x86_64-linux -Fu/home/mistert/comp/synapse/source/lib/lib/x86_64-linux -Fu/usr/local/share/lazarus/components/lazutils/lib/x86_64-linux -Fu/usr/local/share/lazarus/packager/units/x86_64-linux -Fu/home/mistert/arduino/fp/ -FU/home/mistert/arduino/fp/lib/x86_64-linux/ -dUseCThreads -dLCL -dLCLgtk2 gerre_serre.lpr"/>
+</CONFIG>

@@ -1,0 +1,83 @@
+object Form1: TForm1
+  Left = 493
+  Height = 309
+  Top = 148
+  Width = 514
+  Caption = 'Gestion de la serre'
+  ClientHeight = 309
+  ClientWidth = 514
+  OnClose = FormClose
+  OnCreate = FormCreate
+  LCLVersion = '1.9.0.0'
+  object Panel1: TPanel
+    Left = 0
+    Height = 32
+    Top = 0
+    Width = 514
+    Align = alTop
+    ClientHeight = 32
+    ClientWidth = 514
+    TabOrder = 0
+    object Edit1: TEdit
+      Left = 431
+      Height = 27
+      Top = 2
+      Width = 25
+      TabOrder = 0
+      Text = '@'
+    end
+    object Button1: TButton
+      Left = 464
+      Height = 23
+      Top = 2
+      Width = 45
+      Caption = '-->'
+      OnClick = Button1Click
+      TabOrder = 1
+    end
+    object ToggleBox1: TToggleBox
+      Left = 8
+      Height = 23
+      Top = 2
+      Width = 64
+      Caption = 'Lampe'
+      OnClick = ToggleBox1Click
+      TabOrder = 2
+    end
+    object ToggleBox2: TToggleBox
+      Left = 72
+      Height = 23
+      Top = 2
+      Width = 64
+      Caption = 'Trappe'
+      OnClick = ToggleBox2Click
+      TabOrder = 3
+    end
+  end
+  object Memo1: TMemo
+    Left = 0
+    Height = 277
+    Top = 32
+    Width = 514
+    Align = alClient
+    Lines.Strings = (
+      'Memo1'
+    )
+    ReadOnly = True
+    ScrollBars = ssAutoVertical
+    TabOrder = 1
+    WantReturns = False
+  end
+  object serial: TSdpoSerial
+    Active = False
+    BaudRate = br__9600
+    DataBits = db8bits
+    Parity = pNone
+    FlowControl = fcNone
+    StopBits = sbOne
+    Device = '/dev/ttyUSB0'
+    OnRxData = serialRxData
+    Left = 472
+    Top = 48
+  end
+end

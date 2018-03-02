@@ -1,0 +1,98 @@
+unit main;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
+  SdpoSerial;
+
+type
+
+  { TForm1 }
+
+  TForm1 = class(TForm)
+    Button1: TButton;
+    Edit1: TEdit;
+    Memo1: TMemo;
+    Panel1: TPanel;
+    serial: TSdpoSerial;
+    ToggleBox1: TToggleBox;
+    ToggleBox2: TToggleBox;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure FormCreate(Sender: TObject);
+    procedure serialRxData(Sender: TObject);
+    procedure ToggleBox1Click(Sender: TObject);
+    procedure ToggleBox2Click(Sender: TObject);
+  private
+    tampon:string;
+  public
+
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.lfm}
+
+{ TForm1 }
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  serial.WriteData(edit1.text+chr(13)+chr(10));
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+
+end;
+
+procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  serial.Active:=false;
+  serial.Close;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  memo1.clear;
+  serial.Active:=true;
+  serial.Open;
+end;
+
+procedure TForm1.serialRxData(Sender: TObject);
+var s:string;
+begin
+  if (serial.DataAvailable) then
+    begin
+      s :=serial.ReadData;
+
+      if pos(chr(10),s) <> 0 then
+        begin
+          tampon:=tampon+s;
+          tampon:=copy(tampon,1,length(tampon)-2);
+          if trim(tampon) <> '' then memo1.lines.add(tampon);
+          tampon:='';
+        end
+      else tampon:=s;
+
+    end;
+end;
+
+procedure TForm1.ToggleBox1Click(Sender: TObject);
+begin
+  if self.ToggleBox1.Checked then serial.WriteData('A'+chr(13)+chr(10)) else serial.WriteData('a'+chr(13)+chr(10));
+end;
+
+procedure TForm1.ToggleBox2Click(Sender: TObject);
+begin
+  if self.ToggleBox2.Checked then serial.WriteData('T'+chr(13)+chr(10)) else serial.WriteData('t'+chr(13)+chr(10));
+end;
+
+end.
+

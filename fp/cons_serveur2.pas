@@ -118,15 +118,15 @@ end;
 
 
 begin
-  Assignfile(f,'/var/log/mrt_serveur.log');
+  Assignfile(f,'./mrt_serveur.log');
   Rewrite(f);
   Serv:=TTestHTTPServer.Create(Nil);
   try
     Serv.FListOfStrings:=TstringList.create;
     Serv.Fser:=Tblockserial.create;
     Serv.Fser.LinuxLock:=false;
-    if not Serv.Fser.InstanceActive then Serv.Fser.connect('/dev/ttyACM0');
-    Serv.Fser.config(115200,8,'N',SB1,False,False);
+    if not Serv.Fser.InstanceActive then Serv.Fser.connect(paramstr(1));
+    Serv.Fser.config(9600,8,'N',SB1,False,False);
     Serv.Fser.purge();
     sleep(800);
     If Serv.Fser.CanRead(MX) then begin
@@ -135,14 +135,16 @@ begin
     end;
     Writeln(f,'Starting server');
 
-    Serv.BaseDir:=ExtractFilePath('/home/pi/www');
+    Serv.BaseDir:=ExtractFilePath('/root');
     {$ifdef unix}
     Serv.MimeTypesFile:='/etc/mime.types';
     {$endif}
     Serv.Threaded:=False;
     Serv.Port:=8080;
+    
     Serv.AcceptIdleTimeout:=1000;
     Serv.OnAcceptIdle:=@Serv.DoIdle;
+    
     Serv.Active:=True;
   finally
     Serv.Free;
